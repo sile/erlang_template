@@ -1,6 +1,6 @@
 APP=hoge
 
-all: compile eunit                                                   
+all: compile xref eunit dialyze
 
 init:
 	@eval "if ! [ -f 'src/${APP}.app.src' ]; then ./rebar create-app appid=${APP}; fi"
@@ -14,6 +14,7 @@ xref:
 
 clean:
 	@./rebar clean skip_deps=true
+	@rm -f .dialyze.plt
 
 eunit:
 	@./rebar eunit skip_deps=true
@@ -21,8 +22,8 @@ eunit:
 edoc:
 	@./rebar doc skip_deps=true
 
-start:
-	erl -pz ebin deps/*/ebin -eval 'erlang:display({start_app, $(APP), application:start($(APP))}).'
+start: compile
+	@erl -pz ebin deps/*/ebin -eval 'erlang:display({start_app, $(APP), application:ensure_all_started($(APP))}).'
 
 .dialyzer.plt:
 	touch .dialyzer.plt
