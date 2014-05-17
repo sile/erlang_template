@@ -8,3 +8,4 @@ deps/
 log/
 erl
 *.dump
+.eunit
