@@ -1,8 +1,8 @@
 *~
 *.beam
 /.*/
-/doc/
-/ebin/
+doc/
+ebin/
 .dialyzer.plt
 deps/
 log/
