@@ -2,6 +2,8 @@ APP=hoge
 
 all: compile xref eunit dialyze
 
+DIALYZER_OPTS=-Werror_handling -Wrace_conditions -Wunmatched_returns
+
 init:
 	@eval "if ! [ -f 'src/${APP}.app.src' ]; then ./rebar create-app appid=${APP}; fi"
 	@./rebar get-deps compile
@@ -30,4 +32,4 @@ start: compile
 	dialyzer --build_plt --plt .dialyzer.plt --apps erts kernel stdlib
 
 dialyze: .dialyzer.plt
-	dialyzer --plt .dialyzer.plt -r ebin
+	dialyzer --plt .dialyzer.plt -r ebin $(DIALYZER_OPTS)
