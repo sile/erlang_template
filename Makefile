@@ -1,8 +1,8 @@
 APP=hoge
 
-all: compile xref eunit dialyze
-
 DIALYZER_OPTS=-Werror_handling -Wrace_conditions -Wunmatched_returns
+
+all: compile xref eunit dialyze
 
 init:
 	@eval "if ! [ -f 'src/${APP}.app.src' ]; then ./rebar create-app appid=${APP}; fi"
