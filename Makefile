@@ -6,26 +6,33 @@ all: compile xref eunit dialyze
 
 init:
 	@eval "if ! [ -f 'src/${APP}.app.src' ]; then ./rebar create-app appid=${APP}; fi"
-	@./rebar get-deps compile
+	@./rebar prepare-deps
 
 compile:
-	@./rebar compile skip_deps=true
+	@./rebar -r compile skip_deps=true
+
+refresh:
+	@./rebar refresh-deps
+	@rm -f .dialyzer.plt
 
 xref:
-	@./rebar xref skip_deps=true
+	@./rebar -r xref skip_deps=true
 
 clean:
-	@./rebar clean skip_deps=true
-	@rm -f .dialyze.plt
+	@./rebar -r clean skip_deps=true
+	@rm -f .dialyzer.plt
+
+distclean:
+	@git clean -d -f -x
 
 eunit:
-	@./rebar eunit skip_deps=true
+	@./rebar -r eunit skip_deps=true
 
 edoc:
-	@./rebar doc skip_deps=true
+	@./rebar -r doc skip_deps=true
 
 start: compile
-	@erl -pz ebin deps/*/ebin -eval 'erlang:display({start_app, $(APP), application:ensure_all_started($(APP))}).'
+	@erl -pz ebin apps/*/ebin deps/*/ebin -eval 'erlang:display({start_app, $(APP), application:ensure_all_started($(APP))}).'
 
 .dialyzer.plt:
 	touch .dialyzer.plt
