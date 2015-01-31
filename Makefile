@@ -24,7 +24,7 @@ clean:
 	@rm -f .dialyzer.plt
 
 distclean:
-	@git clean -d -f -x
+	@git clean -ffdx
 
 eunit:
 	@./rebar -r eunit skip_deps=true
